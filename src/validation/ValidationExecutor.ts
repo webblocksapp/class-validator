@@ -88,25 +88,38 @@ export class ValidationExecutor {
 
     // General validation
     Object.keys(groupedMetadatas).forEach(propertyName => {
-      const value = (object as any)[propertyName];
-      const definedMetadatas = groupedMetadatas[propertyName].filter(
-        metadata => metadata.type === ValidationTypes.IS_DEFINED
-      );
-      const metadatas = groupedMetadatas[propertyName].filter(
-        metadata => metadata.type !== ValidationTypes.IS_DEFINED && metadata.type !== ValidationTypes.WHITELIST
-      );
-
       if (
-        value instanceof Promise &&
-        metadatas.find(metadata => metadata.type === ValidationTypes.PROMISE_VALIDATION)
+        (this.validatorOptions !== undefined &&
+          (this.validatorOptions.propertyName === propertyName || this.validatorOptions.propertyName === undefined)) ||
+        this.validatorOptions === undefined
       ) {
-        this.awaitingPromises.push(
-          value.then(resolvedValue => {
-            this.performValidations(object, resolvedValue, propertyName, definedMetadatas, metadatas, validationErrors);
-          })
+        const value = (object as any)[propertyName];
+        const definedMetadatas = groupedMetadatas[propertyName].filter(
+          metadata => metadata.type === ValidationTypes.IS_DEFINED
         );
-      } else {
-        this.performValidations(object, value, propertyName, definedMetadatas, metadatas, validationErrors);
+        const metadatas = groupedMetadatas[propertyName].filter(
+          metadata => metadata.type !== ValidationTypes.IS_DEFINED && metadata.type !== ValidationTypes.WHITELIST
+        );
+
+        if (
+          value instanceof Promise &&
+          metadatas.find(metadata => metadata.type === ValidationTypes.PROMISE_VALIDATION)
+        ) {
+          this.awaitingPromises.push(
+            value.then(resolvedValue => {
+              this.performValidations(
+                object,
+                resolvedValue,
+                propertyName,
+                definedMetadatas,
+                metadatas,
+                validationErrors
+              );
+            })
+          );
+        } else {
+          this.performValidations(object, value, propertyName, definedMetadatas, metadatas, validationErrors);
+        }
       }
     });
   }
