@@ -136,6 +136,7 @@ export interface ValidatorOptions {
 
   forbidUnknownValues?: boolean;
   stopAtFirstError?: boolean;
+  propertyName?: string;
 }
 ```
 
@@ -258,6 +259,24 @@ Message function accepts `ValidationArguments` which contains the following info
 - `targetName` - name of the object's class being validated
 - `object` - object that is being validated
 - `property` - name of the object's property being validated
+
+## Validating single property
+
+If you need to validate one property of your object, you must specify it on validation options:
+
+```typescript
+validator.validate(post, { propertyName: 'title' });
+```
+
+## Validations order
+
+The validation order depends of the decorator position, it will start to validate from the nearest method decorator to the latest:
+
+```typescript
+@IsEmail()      //Validated second
+@IsNotEmpty()   //Validated first
+email: string
+```
 
 ## Validating arrays
 
