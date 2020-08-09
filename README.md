@@ -19,6 +19,8 @@ Class-validator works on both browser and node.js platforms.
   - [Validation errors](#validation-errors)
   - [Validation messages](#validation-messages)
   - [Validating arrays](#validating-arrays)
+  - [Validating single property](#validating-single-property)
+  - [Validations order](#validations-order)
   - [Validating sets](#validating-sets)
   - [Validating maps](#validating-maps)
   - [Validating nested objects](#validating-nested-objects)
@@ -38,6 +40,7 @@ Class-validator works on both browser and node.js platforms.
   - [Defining validation schema without decorators](#defining-validation-schema-without-decorators)
   - [Validating plain objects](#validating-plain-objects)
   - [Samples](#samples)
+  - [Base Dto](#base-dto)
   - [Extensions](#extensions)
   - [Release notes](#release-notes)
 
@@ -1012,6 +1015,53 @@ Due to nature of the decorators, the validated object has to be instantiated usi
 
 Take a look on samples in [./sample](https://github.com/pleerock/class-validator/tree/master/sample) for more examples of
 usages.
+
+## Base Dto
+
+You can extend your class with BaseDto which provides the `validate` and `validateField` methods to make more portable the class validation:
+
+```typescript
+class MyClass extends BaseDto {
+  constructor() {
+    super();
+    this.initDto(this);
+  }
+
+  @IsNotEmpty()
+  title: string;
+
+  @IsNotEmpty()
+  text: string;
+}
+
+const model = new MyClass();
+```
+
+Validating one field example:
+
+```typescript
+model
+  .validateField('text')
+  .then(() => {
+    console.log('Validation without errors');
+  })
+  .catch(errors => {
+    console.log(errors);
+  });
+```
+
+Validating all fields example:
+
+```typescript
+model
+  .validate()
+  .then(() => {
+    console.log('Validation without errors');
+  })
+  .catch(errors => {
+    console.log(errors);
+  });
+```
 
 ## Extensions
 
