@@ -1,7 +1,7 @@
 import { validate } from '../index';
 import { ValidatorOptions } from '../validation/ValidatorOptions';
 
-export class BaseDto {
+export class BaseModel {
   public dtoObject: any;
 
   constructor(DtoClass: any) {

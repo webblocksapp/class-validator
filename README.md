@@ -40,7 +40,7 @@ Class-validator works on both browser and node.js platforms.
   - [Defining validation schema without decorators](#defining-validation-schema-without-decorators)
   - [Validating plain objects](#validating-plain-objects)
   - [Samples](#samples)
-  - [Base Dto](#base-dto)
+  - [Base Model](#base-model)
   - [Extensions](#extensions)
   - [Release notes](#release-notes)
 
@@ -1016,9 +1016,9 @@ Due to nature of the decorators, the validated object has to be instantiated usi
 Take a look on samples in [./sample](https://github.com/pleerock/class-validator/tree/master/sample) for more examples of
 usages.
 
-## Base Dto
+## Base Model
 
-You can use the `BaseDto` class which provides the `validate` and `validateField` methods to make more portable the class validation:
+You can use the `BaseModel` class which provides the `validate` and `validateField` methods to make more portable the class validation:
 
 ```typescript
 class MyClass {
@@ -1034,7 +1034,7 @@ class MyClass {
   text: string;
 }
 
-const model = new BaseDto(MyClass);
+const model = new BaseModel(MyClass);
 const validationOptions = {...} // Your validation options here
 ```
 

@@ -1,6 +1,6 @@
 import { IsNotEmpty } from '../../src/decorator/decorators';
 import { Validator } from '../../src/validation/Validator';
-import { BaseDto } from '../../src/base-dto';
+import { BaseModel } from '../../src/base-model';
 
 const validator = new Validator();
 
@@ -13,7 +13,7 @@ describe('base dto validation', () => {
     text: string;
   }
 
-  const model = new BaseDto(MyClass);
+  const model = new BaseModel(MyClass);
 
   it('should validate one property set with base dto', () => {
     expect.assertions(1);

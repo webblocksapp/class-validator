@@ -21,7 +21,7 @@ export * from './validation/Validator';
 export * from './validation-schema/ValidationSchema';
 export * from './register-decorator';
 export * from './metadata/MetadataStorage';
-export { BaseDto } from './base-dto';
+export { BaseModel } from './base-model';
 
 // -------------------------------------------------------------------------
 // Shortcut methods for api users
