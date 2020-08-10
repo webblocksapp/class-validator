@@ -20,8 +20,8 @@ describe('base dto validation', () => {
 
     return model
       .validateField('text')
-      .then(() => {
-        console.log('Validation without errors');
+      .then(validatedModel => {
+        console.log(validatedModel);
       })
       .catch(errors => {
         expect(errors.length).toEqual(1);
@@ -33,8 +33,8 @@ describe('base dto validation', () => {
 
     return model
       .validate()
-      .then(() => {
-        console.log('Validation without errors');
+      .then(validatedModel => {
+        console.log(validatedModel);
       })
       .catch(errors => {
         expect(errors.length).toEqual(2);
