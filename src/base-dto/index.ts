@@ -2,7 +2,7 @@ import { validate } from '../index';
 import { ValidatorOptions } from '../validation/ValidatorOptions';
 
 export class BaseDto {
-  private dtoObject: any;
+  public dtoObject: any;
 
   constructor(DtoClass: any) {
     this.setDto(DtoClass);
