@@ -5,12 +5,7 @@ import { BaseDto } from '../../src/base-dto';
 const validator = new Validator();
 
 describe('base dto validation', () => {
-  class MyClass extends BaseDto {
-    constructor() {
-      super();
-      this.initDto(this);
-    }
-
+  class MyClass {
     @IsNotEmpty()
     title: string;
 
@@ -18,10 +13,11 @@ describe('base dto validation', () => {
     text: string;
   }
 
+  const model = new BaseDto(MyClass);
+
   it('should validate one property set with base dto', () => {
     expect.assertions(1);
 
-    const model = new MyClass();
     return model
       .validateField('text')
       .then(() => {
@@ -35,7 +31,6 @@ describe('base dto validation', () => {
   it('should validate all properties with base dto', () => {
     expect.assertions(1);
 
-    const model = new MyClass();
     return model
       .validate()
       .then(() => {

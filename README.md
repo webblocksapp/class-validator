@@ -1018,10 +1018,10 @@ usages.
 
 ## Base Dto
 
-You can extend your class with BaseDto which provides the `validate` and `validateField` methods to make more portable the class validation:
+You can use the `BaseDto` class which provides the `validate` and `validateField` methods to make more portable the class validation:
 
 ```typescript
-class MyClass extends BaseDto {
+class MyClass {
   constructor() {
     super();
     this.initDto(this);
@@ -1034,14 +1034,15 @@ class MyClass extends BaseDto {
   text: string;
 }
 
-const model = new MyClass();
+const model = new BaseDto(MyClass);
+const validationOptions = {...} // Your validation options here
 ```
 
 Validating one field example:
 
 ```typescript
 model
-  .validateField('text')
+  .validateField('text', validationOptions) // validationOptions is an optional parameter
   .then(() => {
     console.log('Validation without errors');
   })
@@ -1054,7 +1055,7 @@ Validating all fields example:
 
 ```typescript
 model
-  .validate()
+  .validate(validationOptions) // validationOptions is an optional parameter
   .then(() => {
     console.log('Validation without errors');
   })

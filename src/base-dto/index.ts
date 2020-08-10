@@ -1,27 +1,37 @@
 import { validate } from '../index';
+import { ValidatorOptions } from '../validation/ValidatorOptions';
 
 export class BaseDto {
   private dtoObject: any;
 
-  public initDto(dtoObject): void {
-    this.dtoObject = dtoObject;
+  constructor(DtoClass: any) {
+    this.setDto(DtoClass);
   }
 
-  public validate(): Promise<any> {
+  private setDto(DtoClass: any): void {
+    this.dtoObject = new DtoClass();
+  }
+
+  public validate(validatorOptions?: ValidatorOptions): Promise<any> {
     return new Promise((resolve, reject) => {
-      validate(this.dtoObject).then(errors => {
+      validate(this.dtoObject, validatorOptions).then(errors => {
         if (errors.length === 0) resolve();
         if (errors.length > 0) reject(errors);
       });
     });
   }
 
-  public validateField(fieldName: string): Promise<any> {
+  public validateField(fieldName: string, validatorOptions?: ValidatorOptions): Promise<any> {
     return new Promise((resolve, reject) => {
-      validate(this.dtoObject, {
-        propertyName: fieldName,
-        stopAtFirstError: true,
-      }).then(errors => {
+      validatorOptions = Object.assign(
+        {
+          propertyName: fieldName,
+          stopAtFirstError: true,
+        },
+        validatorOptions
+      );
+
+      validate(this.dtoObject, validatorOptions).then(errors => {
         if (errors.length === 0) resolve();
         if (errors.length > 0) reject(errors);
       });
