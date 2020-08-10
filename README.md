@@ -1043,8 +1043,8 @@ Validating one field example:
 ```typescript
 model
   .validateField('text', validationOptions) // validationOptions is an optional parameter
-  .then(validatedModel => {
-    console.log(validatedModel);
+  .then(validatedField => {
+    console.log(validatedField);
   })
   .catch(errors => {
     console.log(errors);

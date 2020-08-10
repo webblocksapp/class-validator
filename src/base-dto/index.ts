@@ -32,7 +32,7 @@ export class BaseDto {
       );
 
       validate(this.dtoObject, validatorOptions).then(errors => {
-        if (errors.length === 0) resolve(this.dtoObject);
+        if (errors.length === 0) resolve(this.dtoObject[fieldName]);
         if (errors.length > 0) reject(errors);
       });
     });
