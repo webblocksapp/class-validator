@@ -2,7 +2,7 @@ import { validate } from '../index';
 import { ValidatorOptions } from '../validation/ValidatorOptions';
 
 export class BaseModel {
-  public dtoObject: any;
+  private dtoObject: any;
 
   constructor(DtoClass: any) {
     this.setDto(DtoClass);
@@ -10,6 +10,10 @@ export class BaseModel {
 
   private setDto(DtoClass: any): void {
     this.dtoObject = new DtoClass();
+  }
+
+  public setValue(key: string, value: any): void {
+    this.dtoObject[key] = value;
   }
 
   public validate(validatorOptions?: ValidatorOptions): Promise<any> {
