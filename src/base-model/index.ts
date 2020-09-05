@@ -16,6 +16,10 @@ export class BaseModel {
     this.dtoObject[key] = value;
   }
 
+  public getValue(key: string): any {
+    return this.dtoObject[key];
+  }
+
   public validate(validatorOptions?: ValidatorOptions): Promise<any> {
     return new Promise(resolve => {
       validate(this.dtoObject, validatorOptions).then(errors => {
