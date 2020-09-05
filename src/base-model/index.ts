@@ -17,10 +17,10 @@ export class BaseModel {
   }
 
   public validate(validatorOptions?: ValidatorOptions): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       validate(this.dtoObject, validatorOptions).then(errors => {
-        if (errors.length === 0) resolve(this.dtoObject);
-        if (errors.length > 0) reject(errors);
+        if (errors.length === 0) resolve({ isValid: true, validatedData: this.dtoObject, errors: null });
+        if (errors.length > 0) resolve({ isValid: false, validatedData: null, errors });
       });
     });
   }
