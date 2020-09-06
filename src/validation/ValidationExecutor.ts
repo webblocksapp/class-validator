@@ -187,7 +187,11 @@ export class ValidationExecutor {
       return;
     }
 
-    if (this.validatorOptions && this.validatorOptions.propertyName !== propertyName) {
+    if (
+      this.validatorOptions &&
+      this.validatorOptions.propertyName !== undefined &&
+      this.validatorOptions.propertyName !== propertyName
+    ) {
       return;
     }
 
