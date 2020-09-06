@@ -22,6 +22,14 @@ export class BaseModel {
 
   public validate(validatorOptions?: ValidatorOptions): Promise<any> {
     return new Promise(resolve => {
+      validatorOptions = Object.assign(
+        {
+          propertyName: undefined,
+          stopAtFirstError: true,
+        },
+        validatorOptions
+      );
+
       validate(this.dtoObject, validatorOptions).then(errors => {
         if (errors.length === 0) resolve({ isValid: true, validatedData: this.dtoObject, errors: null });
         if (errors.length > 0) resolve({ isValid: false, validatedData: null, errors });
