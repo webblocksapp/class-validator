@@ -20,6 +20,15 @@ export class BaseModel {
     return this.dtoObject[key];
   }
 
+  public fill(data: any): void {
+    const objectKeys = Object.keys(data);
+
+    objectKeys.forEach(key => {
+      const value = data[key];
+      this.setValue(key, value);
+    });
+  }
+
   public validate(validatorOptions?: ValidatorOptions): Promise<any> {
     return new Promise(resolve => {
       validatorOptions = Object.assign(
