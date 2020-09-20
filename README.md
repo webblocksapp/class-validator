@@ -1016,54 +1016,6 @@ Due to nature of the decorators, the validated object has to be instantiated usi
 Take a look on samples in [./sample](https://github.com/pleerock/class-validator/tree/master/sample) for more examples of
 usages.
 
-## Base Model
-
-You can use the `BaseModel` class which provides the `validate` and `validateField` methods to make more portable the class validation:
-
-```typescript
-class MyClass {
-  constructor() {
-    super();
-    this.initDto(this);
-  }
-
-  @IsNotEmpty()
-  title: string;
-
-  @IsNotEmpty()
-  text: string;
-}
-
-const model = new BaseModel(MyClass);
-const validationOptions = {...} // Your validation options here
-```
-
-Validating one field example:
-
-```typescript
-model
-  .validateField('text', validationOptions) // validationOptions is an optional parameter
-  .then(validatedField => {
-    console.log(validatedField);
-  })
-  .catch(errors => {
-    console.log(errors);
-  });
-```
-
-Validating all fields example:
-
-```typescript
-model
-  .validate(validationOptions) // validationOptions is an optional parameter
-  .then(validatedModel => {
-    console.log(validatedModel);
-  })
-  .catch(errors => {
-    console.log(errors);
-  });
-```
-
 ## Extensions
 
 There are several extensions that simplify class-validator integration with other modules:
