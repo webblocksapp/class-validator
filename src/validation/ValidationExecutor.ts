@@ -8,6 +8,7 @@ import { ValidationArguments } from './ValidationArguments';
 import { ValidationUtils } from './ValidationUtils';
 import { isPromise, convertToArray } from '../utils';
 import { getMetadataStorage } from '../metadata/MetadataStorage';
+import { get } from 'lodash';
 
 /**
  * Executes validation over given object.
@@ -52,6 +53,17 @@ export class ValidationExecutor {
     const groups = this.validatorOptions ? this.validatorOptions.groups : undefined;
     const strictGroups = (this.validatorOptions && this.validatorOptions.strictGroups) || false;
     const always = (this.validatorOptions && this.validatorOptions.always) || false;
+    const propertyName: any = this.validatorOptions?.propertyName;
+
+    if (propertyName !== undefined && propertyName.match(/\./)) {
+
+      const propertyNameArray = propertyName.split('.');
+      const childPropertyName = propertyNameArray?.pop();
+      const parentPropertyName = propertyNameArray?.join();
+      object = get(object, parentPropertyName);
+      
+      (this.validatorOptions as any).propertyName = childPropertyName;
+    }
 
     const targetMetadatas = this.metadataStorage.getTargetValidationMetadatas(
       object.constructor,
@@ -88,7 +100,7 @@ export class ValidationExecutor {
 
     // General validation
     Object.keys(groupedMetadatas).forEach(propertyName => {
-      const value = (object as any)[propertyName];
+      const value = get(object, propertyName);
       const definedMetadatas = groupedMetadatas[propertyName].filter(
         metadata => metadata.type === ValidationTypes.IS_DEFINED
       );
@@ -128,7 +140,7 @@ export class ValidationExecutor {
       if (this.validatorOptions && this.validatorOptions.forbidNonWhitelisted) {
         // throw errors
         notAllowedProperties.forEach(property => {
-          const validationError: ValidationError = this.generateValidationError(object, object[property], property);
+          const validationError: ValidationError = this.generateValidationError(object, get(object, property), property);
           validationError.constraints = { [ValidationTypes.WHITELIST]: `property ${property} should not exist` };
           validationError.children = undefined;
           validationErrors.push(validationError);
@@ -220,7 +232,7 @@ export class ValidationExecutor {
   }
 
   private generateValidationError(object: object, value: any, propertyName: string): ValidationError {
-    const validationError = new ValidationError();
+    const validationError: ValidationError = new ValidationError();
 
     if (
       !this.validatorOptions ||
