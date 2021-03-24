@@ -59,7 +59,7 @@ export class ValidationExecutor {
 
       const propertyNameArray = propertyName.split('.');
       const childPropertyName = propertyNameArray?.pop();
-      const parentPropertyName = propertyNameArray?.join();
+      const parentPropertyName = propertyNameArray?.join('.');
       object = get(object, parentPropertyName);
       
       (this.validatorOptions as any).propertyName = childPropertyName;
